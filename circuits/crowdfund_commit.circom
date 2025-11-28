@@ -14,6 +14,10 @@ template CrowdfundWithCommitments(n) {
     signal input total;
     signal input commitments[n];
 
+    // PUBLIC OUTPUTS
+    signal output total_out;
+    signal output commitments_out[n];
+
     // PRIVATE INPUTS
     signal input amounts[n];
     signal input randomness[n];
@@ -38,6 +42,9 @@ template CrowdfundWithCommitments(n) {
         // Enforce computed hash equals public commitment
         hashers[i].out === commitments[i];
 
+        // Expose commitment publicly
+        commitments_out[i] <== commitments[i];
+
         // Accumulate sum of donations
         varSum += amounts[i];
     }
@@ -46,6 +53,9 @@ template CrowdfundWithCommitments(n) {
 
     // Enforce sum of all amounts equals public total
     sum === total;
+
+    // Expose total publicly
+    total_out <== total;
 }
 
 // Instantiate main circuit with 4 donors

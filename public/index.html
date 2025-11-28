@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            http-equiv="X-UA-Compatible"
+            content="IE=edge"
+        />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        />
+        <title>ZK Crowdfunding Auditor Demo</title>
+        <link
+            rel="stylesheet"
+            href="styles.css"
+        />
+    </head>
+    <body>
+        <main class="page">
+            <header class="hero">
+                <h1>ZK Crowdfunding Auditor</h1>
+                <p class="tagline">
+                    Generate commitments, prove the total, and verify it
+                    end-to-end with a single click.
+                </p>
+            </header>
+
+            <section class="layout">
+                <article class="card form-card">
+                    <h2>Donation Inputs</h2>
+                    <p class="hint">
+                        Enter four donor amounts. You can supply randomness
+                        values or let the backend generate them.
+                    </p>
+                    <form
+                        id="donorForm"
+                        autocomplete="off"
+                    >
+                        <div
+                            id="donorRows"
+                            class="donor-rows"
+                        ></div>
+                        <div class="form-actions">
+                            <button
+                                type="button"
+                                id="fillSample"
+                                class="secondary"
+                            >
+                                Use Sample Data
+                            </button>
+                            <button
+                                type="button"
+                                id="randomizeEntropy"
+                                class="secondary"
+                            >
+                                Randomize Entropy
+                            </button>
+                            <button
+                                type="submit"
+                                class="primary"
+                            >
+                                Prove &amp; Verify
+                            </button>
+                        </div>
+                    </form>
+                    <p
+                        id="formError"
+                        class="error hidden"
+                    ></p>
+                </article>
+
+                <article class="card status-card">
+                    <h2>Proof Status</h2>
+                    <div
+                        id="statusPanel"
+                        class="status-panel"
+                    >
+                        <p class="placeholder">
+                            Fill in the donations and click
+                            <em>Prove &amp; Verify</em> to see the
+                            zero-knowledge flow.
+                        </p>
+                    </div>
+                </article>
+
+                <article class="card info-card">
+                    <h2>How It Works</h2>
+                    <ol>
+                        <li>
+                            Commitments are produced with the Poseidon hash for
+                            each donor amount and its secret randomness.
+                        </li>
+                        <li>
+                            The Groth16 prover generates a zk-SNARK showing the
+                            commitments are valid and the public total matches.
+                        </li>
+                        <li>
+                            The verifier checks the proof using the exported
+                            verification key, confirming the audit without
+                            revealing private donations.
+                        </li>
+                    </ol>
+                    <p class="hint">
+                        All heavy lifting runs locally through the pre-built
+                        circuit artifacts in this repository.
+                    </p>
+                </article>
+            </section>
+        </main>
+
+        <script
+            src="app.js"
+            defer
+        ></script>
+    </body>
+</html>

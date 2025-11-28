@@ -19,5 +19,20 @@ snarkjs zkey contribute ./keys/crowdfund_commit_0000.zkey ./keys/crowdfund_commi
 snarkjs zkey export verificationkey ./keys/crowdfund_commit_final.zkey keys/verification_key.json
 
 4. snarkjs groth16 prove ./keys/crowdfund_commit_final.zkey ./witness/witness.wtns ./output/proof.json ./output/public.json
+   (the generated `public.json` lists the audited total followed by the four Poseidon commitments)
 
 5. snarkjs groth16 verify ./keys/verification_key.json ./output/public.json ./output/proof.json
+
+## Interactive demo UI
+
+The repository now includes a small Express server that serves a browser-based demo.
+
+1. Install dependencies:
+    ```
+    npm install
+    ```
+2. Start the server (defaults to http://localhost:3000):
+    ```
+    npm start
+    ```
+3. Open the URL in a browser, populate the donation form, and click **Prove & Verify** to run witness generation, Groth16 proving, and verification locally.
