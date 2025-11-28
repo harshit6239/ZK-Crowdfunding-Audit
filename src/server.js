@@ -41,6 +41,56 @@ function generateEntropy() {
     return BigInt(`0x${crypto.randomBytes(8).toString("hex")}`).toString();
 }
 
+function normalizeProof(rawProof) {
+    let proof = rawProof;
+    if (typeof proof === "string") {
+        try {
+            proof = JSON.parse(proof);
+        } catch (err) {
+            throw new Error("proof string must contain valid JSON");
+        }
+    }
+
+    if (typeof proof !== "object" || proof === null) {
+        throw new Error("proof must be provided as an object");
+    }
+
+    return proof;
+}
+
+function normalizePublicSignals(rawSignals) {
+    let signals = rawSignals;
+    if (typeof signals === "string") {
+        try {
+            signals = JSON.parse(signals);
+        } catch (err) {
+            throw new Error("publicSignals string must contain a JSON array");
+        }
+    }
+
+    if (!Array.isArray(signals)) {
+        throw new Error("publicSignals must be an array");
+    }
+
+    return signals.map((value, index) => {
+        if (typeof value === "string") {
+            const trimmed = value.trim();
+            if (trimmed === "") {
+                throw new Error(
+                    `publicSignals[${index}] must not be an empty string`
+                );
+            }
+            return trimmed;
+        }
+        if (typeof value === "number" || typeof value === "bigint") {
+            return value.toString();
+        }
+        throw new Error(
+            `publicSignals[${index}] must be a string, number, or bigint`
+        );
+    });
+}
+
 app.get("/api/config", (req, res) => {
     res.json({
         donorCount: DONOR_COUNT,
@@ -144,6 +194,52 @@ app.post("/api/proof", async (req, res) => {
         });
     } catch (err) {
         console.error("/api/proof error", err);
+        res.status(400).json({
+            error: err.message || "Unknown error",
+        });
+    }
+});
+
+app.post("/api/verify", async (req, res) => {
+    try {
+        const { proof: proofRaw, publicSignals: signalsRaw } = req.body || {};
+
+        if (proofRaw === undefined || signalsRaw === undefined) {
+            throw new Error("proof and publicSignals are required");
+        }
+
+        if (!verificationKey) {
+            throw new Error("verification key is not loaded");
+        }
+
+        const proof = normalizeProof(proofRaw);
+        const publicSignals = normalizePublicSignals(signalsRaw);
+
+        if (publicSignals.length !== 1 + DONOR_COUNT) {
+            throw new Error(
+                `expected ${
+                    1 + DONOR_COUNT
+                } public signals (1 total + ${DONOR_COUNT} commitments)`
+            );
+        }
+
+        const publicTotal = publicSignals[0];
+        const publicCommitments = publicSignals.slice(1);
+
+        const verified = await snarkjs.groth16.verify(
+            verificationKey,
+            publicSignals,
+            proof
+        );
+
+        res.json({
+            verified,
+            publicSignals,
+            publicTotal,
+            publicCommitments,
+        });
+    } catch (err) {
+        console.error("/api/verify error", err);
         res.status(400).json({
             error: err.message || "Unknown error",
         });

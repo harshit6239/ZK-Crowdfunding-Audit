@@ -84,6 +84,65 @@
                     </div>
                 </article>
 
+                <article class="card verify-card">
+                    <h2>Verification</h2>
+                    <p class="hint">
+                        Paste proof and public signals to verify them against
+                        the circuit, or reuse the last proof you generated.
+                    </p>
+                    <form
+                        id="verifyForm"
+                        autocomplete="off"
+                    >
+                        <label>
+                            Proof JSON
+                            <textarea
+                                id="proofInput"
+                                spellcheck="false"
+                                placeholder='{"pi_a": [ ... ], "pi_b": [ ... ], "pi_c": [ ... ]}'
+                            ></textarea>
+                        </label>
+                        <label>
+                            Public Signals JSON
+                            <textarea
+                                id="signalsInput"
+                                spellcheck="false"
+                                placeholder='["total", "commitment1", "commitment2", ...]'
+                            ></textarea>
+                        </label>
+                        <div class="form-actions">
+                            <button
+                                type="button"
+                                id="fillFromLastProof"
+                                class="secondary"
+                            >
+                                Load Last Proof
+                            </button>
+                            <button
+                                type="submit"
+                                id="verifySubmit"
+                                class="primary"
+                            >
+                                Verify Proof
+                            </button>
+                        </div>
+                    </form>
+                    <p
+                        id="verifyError"
+                        class="error hidden"
+                    ></p>
+                    <div
+                        id="verificationPanel"
+                        class="verification-panel"
+                    >
+                        <p class="placeholder">
+                            Generate a proof to run the verifier, or paste one
+                            and click
+                            <em>Verify Proof</em>.
+                        </p>
+                    </div>
+                </article>
+
                 <article class="card info-card">
                     <h2>How It Works</h2>
                     <ol>

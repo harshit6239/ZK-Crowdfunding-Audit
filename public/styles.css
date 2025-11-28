@@ -169,13 +169,15 @@ button:active {
     display: none;
 }
 
-.status-panel {
+.status-panel,
+.verification-panel {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-.status-panel .placeholder {
+.status-panel .placeholder,
+.verification-panel .placeholder {
     margin: 0;
     color: var(--muted);
     font-style: italic;
@@ -225,6 +227,43 @@ button:active {
     margin: 0;
     white-space: pre-wrap;
     word-break: break-word;
+}
+
+.verify-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.verify-card label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.verify-card textarea {
+    min-height: 140px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    padding: 12px;
+    resize: vertical;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.9rem;
+    background: #f8fafc;
+    color: var(--text);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.verify-card textarea:focus {
+    border-color: var(--accent);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+}
+
+.verify-card .form-actions {
+    margin-top: 0;
 }
 
 .info-card ol {

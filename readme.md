@@ -36,3 +36,4 @@ The repository now includes a small Express server that serves a browser-based d
     npm start
     ```
 3. Open the URL in a browser, populate the donation form, and click **Prove & Verify** to run witness generation, Groth16 proving, and verification locally.
+4. Use the **Verification** card to paste any proof/public-signals pair (or click **Load Last Proof**) and press **Verify Proof** to re-check the proof against the exported verification key.
